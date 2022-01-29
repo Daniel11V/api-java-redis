@@ -6,11 +6,13 @@ import com.coderhouse.model.Restaurante;
 import com.coderhouse.repository.RestauranteRepository;
 import com.coderhouse.service.RestauranteService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -22,6 +24,7 @@ public class RestauranteServiceImpl implements RestauranteService {
 
     private final RestauranteRepository restauranteRepository;
     private final CacheClient<Restaurante> cache;
+    private final ObjectMapper mapper;
 
     @Override
     public Restaurante create(Restaurante restaurante) {
@@ -84,6 +87,11 @@ public class RestauranteServiceImpl implements RestauranteService {
     private Restaurante saveRestauranteInCache(Restaurante restaurante) throws JsonProcessingException {
         log.info("Guardado en Redis: {}", restaurante);
         return cache.save(restaurante.getId().toString(), restaurante);
+    }
+
+    @Override
+    public Map deserialize(String restauranteString) throws JsonProcessingException  {
+        return mapper.readValue(restauranteString, Map.class);
     }
 
 }

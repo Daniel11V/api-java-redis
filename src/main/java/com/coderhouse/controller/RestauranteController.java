@@ -2,11 +2,13 @@ package com.coderhouse.controller;
 
 import com.coderhouse.model.Restaurante;
 import com.coderhouse.service.RestauranteService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -44,6 +46,11 @@ public class RestauranteController {
     public List<Restaurante> deleteRestauranteById(@PathVariable Long id) {
         log.info("DELETE eliminar restaurante por el id");
         return service.deleteRestauranteById(id);
+    }
+
+    @PostMapping("/deserialize")
+    public Map deserializeRestaurante(@RequestBody String restauranteString) throws JsonProcessingException {
+        return service.deserialize(restauranteString);
     }
 
 }
