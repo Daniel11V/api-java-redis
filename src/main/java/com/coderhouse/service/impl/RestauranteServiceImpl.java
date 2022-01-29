@@ -48,8 +48,10 @@ public class RestauranteServiceImpl implements RestauranteService {
             }
             var dataFromCache = cache.recover(id.toString(), Restaurante.class);
             if (!Objects.isNull(dataFromCache)) {
+                log.info("Respuesta obtenida de Redis");
                 return dataFromCache;
             }
+            log.info("Respuesta NO obtenida de Redis");
             var dataFromDatabase = restauranteRepository.findById(id).orElseThrow(ApiRestException::new);
             return saveRestauranteInCache(dataFromDatabase);
         } catch (JsonProcessingException e) {
@@ -60,7 +62,27 @@ public class RestauranteServiceImpl implements RestauranteService {
         return null;
     }
 
+    @Override
+    public Restaurante updateRestauranteById(Restaurante restaurante, Long id)  {
+        try {
+            restaurante.setId(id);
+            var data = restauranteRepository.save(restaurante);
+            return saveRestauranteInCache(data);
+        } catch (JsonProcessingException e) {
+            log.error("Error converting restaurante to string", e);
+        }
+        return restaurante;
+    }
+
+    @Override
+    public List<Restaurante> deleteRestauranteById(Long id)  {
+        restauranteRepository.deleteById(id);
+        cache.delete(id.toString());
+        return findAll();
+    }
+
     private Restaurante saveRestauranteInCache(Restaurante restaurante) throws JsonProcessingException {
+        log.info("Guardado en Redis: {}", restaurante);
         return cache.save(restaurante.getId().toString(), restaurante);
     }
 

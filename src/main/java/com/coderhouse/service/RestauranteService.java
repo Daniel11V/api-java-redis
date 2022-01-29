@@ -9,5 +9,6 @@ public interface RestauranteService {
     Restaurante create(Restaurante restaurante);
     List<Restaurante> findAll();
     Restaurante getRestauranteById(Long id);
-
+    Restaurante updateRestauranteById(Restaurante restaurante, Long id);
+    List<Restaurante> deleteRestauranteById(Long id);
 }

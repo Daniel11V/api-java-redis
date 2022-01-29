@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/coder-house")
@@ -13,6 +15,12 @@ import org.springframework.web.bind.annotation.*;
 public class RestauranteController {
 
     private final RestauranteService service;
+
+    @GetMapping("/restaurantes")
+    public List<Restaurante> getRestaurantes() {
+        log.info("GET obtener todos los restaurantes");
+        return service.findAll();
+    }
 
     @GetMapping("/restaurantes/{id}")
     public Restaurante getRestauranteById(@PathVariable Long id) {
@@ -24,6 +32,18 @@ public class RestauranteController {
     public Restaurante createRestaurante(@RequestBody Restaurante restaurante) {
         log.info("POST crear restaurante");
         return service.create(restaurante);
+    }
+
+    @PutMapping("/restaurantes/{id}")
+    public Restaurante updateRestauranteById(@PathVariable Long id, @RequestBody  Restaurante newRestaurante) {
+        log.info("PUT actualizar restaurante por el id");
+        return service.updateRestauranteById(newRestaurante, id);
+    }
+
+    @DeleteMapping("/restaurantes/{id}")
+    public List<Restaurante> deleteRestauranteById(@PathVariable Long id) {
+        log.info("DELETE eliminar restaurante por el id");
+        return service.deleteRestauranteById(id);
     }
 
 }

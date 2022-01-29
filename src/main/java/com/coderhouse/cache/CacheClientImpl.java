@@ -56,6 +56,11 @@ public class CacheClientImpl<T> implements CacheClient<T> {
         return null;
     }
 
+    @Override
+    public Long delete(String key) {
+        return hashOperations.delete(Constants.NAME_MAP_RESTAURANTE, key);
+    }
+
     private String serializeItem(T item) throws JsonProcessingException {
         var serializeItem = mapper.writeValueAsString(item);
         log.info("Mensaje en formato String: {}", serializeItem);
@@ -63,7 +68,9 @@ public class CacheClientImpl<T> implements CacheClient<T> {
     }
 
     private T deserializeItem(String jsonInput, Class<T> classValue) throws JsonProcessingException {
-        return mapper.readValue(jsonInput, classValue);
+        var deserializeItem = mapper.readValue(jsonInput, classValue);
+        log.info("Mensaje en formato Clase: {}", deserializeItem);
+        return deserializeItem;
     }
 
 
