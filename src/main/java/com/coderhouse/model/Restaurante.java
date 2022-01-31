@@ -25,6 +25,7 @@ public class Restaurante implements Serializable {
             cascade = CascadeType.ALL
     )
     @JoinColumn(name = "restaurante_id")
+    @Builder.Default
     private List<Category> categorias = new ArrayList<>();
     private String descripcion;
     private String horaApertura;
@@ -33,7 +34,7 @@ public class Restaurante implements Serializable {
     private String longitud;
     private String nombre;
     private String telefono;
-    private Date fechaCreacion = Calendar.getInstance().getTime();
+    private final Date fechaCreacion = Calendar.getInstance().getTime();
     @ManyToOne(cascade = CascadeType.ALL)
     private City ciudad;
     private String phone;
