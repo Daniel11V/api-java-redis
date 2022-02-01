@@ -12,6 +12,13 @@ spring:
     port: 6379
     timeOfLife: 60000
 
+springdoc:
+  api-docs:
+    path: /openapi
+  swagger-ui:
+    path: /openapi/index.html
+
+
 management:
   endpoints:
     web:
