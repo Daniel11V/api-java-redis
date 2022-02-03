@@ -6,7 +6,10 @@ spring:
       uri: http://localhost:8888
   profiles:
     active: dev
-  cache: redis
+  session:
+    store-type: redis
+  cache:
+    type: redis
   redis:
     host: localhost
     port: 6379
